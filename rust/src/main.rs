@@ -1,3 +1,57 @@
+
+macro_rules! dprint {
+    ($input:expr) => {
+        println!("{} = {:?}", stringify!($input), $input);
+    };
+}
+
+fn main() {
+    println!("Hello, world!");
+    // loop through for loop 
+    for digit in Digits::new(14562) {
+        print!("{} ", digit);
+    }
+    println!();
+
+    // collect digits in: list
+    let digit_list: Vec<i32> = Digits::new(14562).into_iter().collect();
+    dprint!(digit_list);
+
+    // count digit, max and min of digits
+    let digit_count = Digits::new(14562).into_iter().count();
+    let digit_max = Digits::new(14562).into_iter().max().unwrap();
+    let digit_min = Digits::new(14562).into_iter().min().unwrap();
+    dprint!(digit_count);
+    dprint!(digit_max);
+    dprint!(digit_min);
+
+    // sum and product of digits 
+    let digit_sum: i32 = Digits::new(14562).into_iter().sum();
+    let digit_product: i32 = Digits::new(14562).into_iter().product();
+    dprint!(digit_sum);
+    dprint!(digit_product);
+
+    // abs differnce between sum of even digit and sum of odd digit
+    let digit_even_sum: i32 = Digits::new(14562).into_iter()
+                            .filter(|e| e % 2 == 0)
+                            .sum();
+    let digit_odd_sum: i32 = Digits::new(14562).into_iter()
+                            .filter(|e| e % 2 != 0)
+                            .sum();
+    let diff = i32::abs(digit_even_sum - digit_odd_sum);
+    dprint!(diff);
+
+    // number in sorted digit
+    let mut digit_sorted = Digits::new(14562).into_iter()
+                            .collect::<Vec<_>>();
+    digit_sorted.sort();
+    let digit_sorted = digit_sorted.into_iter().fold(0, |a,x| a * 10 + x);
+    dprint!(digit_sorted);
+    
+
+}
+
+
 struct Digits {
     num : i32,
 }
@@ -50,21 +104,3 @@ impl IntoIterator for &Digits {
 }
 
 
-fn main() {
-    println!("Hello, world!");
-    let digits = Digits::new(14235);
-    
-    // let mut v: Vec<_> = digits.into_iter().collect();
-    // v.sort_by(|a,b| b.cmp(a));
-    // v.iter().for_each(|e| print!("{}",e));
-    for digit in &digits {
-        println!("{}", digit);
-    }
-    for digit in digits {
-        print!("{}", digit);
-    }
-    println!(".................");
-    // println!("{}", digits.into_iter().max().unwrap());
-    println!("{}", Digits::new(24111).into_iter().fold(0, |a,x| a + x));
-
-}
